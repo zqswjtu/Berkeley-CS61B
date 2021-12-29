@@ -1,5 +1,7 @@
 package DebugExercise;
 
+import java.util.Arrays;
+
 /**
  * Exercise to showcase the step over button.
  * Code adapted from https://stackoverflow.com/questions/4895173/bitwise-multiply-and-add-in-java and https://stackoverflow.com/questions/1533131/what-useful-bitwise-operator-code-tricks-should-a-developer-know-about
@@ -70,8 +72,8 @@ public class DebugExercise2 {
      * */
     public static int sumOfElementwiseMaxes(int[] a, int[] b) {
         int[] maxes = arrayMax(a, b);
-        int sumofMaxes = arraySum(maxes);
-        return sumofMaxes;
+        int sumOfMaxes = arraySum(maxes);
+        return sumOfMaxes;
     }
 
 
@@ -81,5 +83,7 @@ public class DebugExercise2 {
 
         int sumOfElementwiseMaxes = sumOfElementwiseMaxes(a, b);
         System.out.println(sumOfElementwiseMaxes);
+        System.out.println(arraySum(a));
+        Arrays.stream(arrayMax(a, b)).forEach(System.out::println);
     }
 }
