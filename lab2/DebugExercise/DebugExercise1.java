@@ -1,12 +1,13 @@
 package DebugExercise;
 
+
 /**
  * Exercise for learning how the debug, breakpoint, and step-into
  * feature work.
  */
 public class DebugExercise1 {
     public static int divideThenRound(int top, int bottom) {
-        int quotient = top / bottom;
+        float quotient = 1.0f * top / bottom;
         int result = Math.round(quotient);
         return result;
     }

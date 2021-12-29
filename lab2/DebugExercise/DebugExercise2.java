@@ -1,6 +1,5 @@
 package DebugExercise;
 
-import java.util.Arrays;
 
 /**
  * Exercise to showcase the step over button.
@@ -10,12 +9,13 @@ public class DebugExercise2 {
     /** Returns the max of a and b. Do not step into this function. */
     public static int max(int a, int b) {
         int w = (b - a) >> 31;
-        /* If you're stepping into this function, click the
-           step out button because you're not going to learn anything. */
+         /*If you're stepping into this function, click the
+           step out button because you're not going to learn anything.*/
         int z = ~(b - a) >> 31;
 
-        int max = b & w | a & z;
+        int max = a & w | b & z;
         return max;
+//        return Math.max(a, b);
     }
 
 
@@ -60,7 +60,8 @@ public class DebugExercise2 {
         int i = 0;
         int sum = 0;
         while (i < x.length) {
-            sum = sum + add(sum, x[i]);
+//            sum = sum + add(sum, x[i]);
+            sum = add(sum, x[i]);
             i = i + 1;
         }
         return sum;
@@ -76,14 +77,11 @@ public class DebugExercise2 {
         return sumOfMaxes;
     }
 
-
     public static void main(String[] args) {
         int[] a = {1, 11, -1, -11};
         int[] b = {3, -3, 2, -1};
 
         int sumOfElementwiseMaxes = sumOfElementwiseMaxes(a, b);
         System.out.println(sumOfElementwiseMaxes);
-        System.out.println(arraySum(a));
-        Arrays.stream(arrayMax(a, b)).forEach(System.out::println);
     }
 }
