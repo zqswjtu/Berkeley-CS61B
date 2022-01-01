@@ -3,7 +3,7 @@ package deque;
 import java.util.Arrays;
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Deque<T> {
+public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     //use an object array to store elements
     private Object[] array;
@@ -139,13 +139,8 @@ public class ArrayDeque<T> implements Deque<T> {
         return false;
     }
 
-    private class AllItemIterator implements Iterator<T>, Iterable<T>{
+    private class AllItemIterator implements Iterator<T> {
         private int index = 0;
-
-        @Override
-        public Iterator<T> iterator() {
-            return this;
-        }
 
         @Override
         public boolean hasNext() {
