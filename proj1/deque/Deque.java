@@ -62,15 +62,16 @@ public interface Deque<T> {
 //    void set(int index, T item);
 //
 //    /**
-//     * The Deque objects we’ll make are iterable (i.e. Iterable<T>) so we must provide this method to
-//     * return an iterator.
+//     * The Deque objects we’ll make are iterable (i.e. Iterable<T>) so we must provide this
+//     * method to return an iterator.
 //     * @return
 //     */
 //    Iterator<T> iterator();
 //
 //    /**
-//     * Returns whether or not the parameter o is equal to the Deque. o is considered equal if it is a Deque
-//     * and if it contains the same contents (as goverened by the generic T’s equals method) in the same order.
+//     * Returns whether or not the parameter o is equal to the Deque. o is considered equal
+//     * if it is a Deque and if it contains the same contents (as goverened by the generic
+//     * T’s equals method) in the same order.
 //     * @param o
 //     * @return
 //     */
