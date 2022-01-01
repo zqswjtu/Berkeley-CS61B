@@ -104,7 +104,7 @@ public class LinkedListDeque<T> implements Deque<T>{
 
     private Node<T> getNode(int index){
         //If no such element exists, return null
-        if (index >= size()) {
+        if (index < 0 || isEmpty() || index >= size()) {
             return null;
         }
         int count = 0;
@@ -139,13 +139,25 @@ public class LinkedListDeque<T> implements Deque<T>{
         }
     }
 
+    private T getItemRecursive(int index, Node<T> head) {
+        if (index == 0) {
+            return head.item;
+        }
+        return getItemRecursive(index - 1, head.next);
+    }
+
     /**
      * Get the element at the given index by recursion. If no such item exists, returns null.
      * @param index
      * @return
      */
     public T getRecursive(int index){
-        return get(index);
+        //If no such element exists, return null
+        if (index < 0 || isEmpty() || index >= size()) {
+            return null;
+        }
+        Node<T> f = first;
+        return getItemRecursive(index, f);
     }
 
     @Override

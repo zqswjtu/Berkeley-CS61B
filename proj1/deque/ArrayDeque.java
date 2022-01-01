@@ -100,14 +100,16 @@ public class ArrayDeque<T> implements Deque<T> {
 
     @Override
     public T get(int index) {
-        if (index >= size()){
+        //If no such element exists, return null
+        if (index < 0 || isEmpty() || index >= size()) {
             return null;
         }
         return (T) (array[index]);
     }
 
     public void set(int index, T item) {
-        if (index >= size()) {
+        //If no such element exists, return null
+        if (index < 0 || isEmpty() || index >= size()) {
             return;
         }
         array[index] = item;

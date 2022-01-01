@@ -140,5 +140,6 @@ public class LinkedListDequeTest {
             System.out.print(iterator.next() + " ");
         }
         System.out.println();
+        System.out.println(linkedListDeque.get(12).equals(linkedListDeque.getRecursive(12)));
     }
 }
