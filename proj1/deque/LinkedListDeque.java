@@ -12,7 +12,9 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
     //a pointer points to the last element of the deque
     private Node<T> last = null;
 
-    public LinkedListDeque() {}
+    public LinkedListDeque() {
+
+    }
 
     @Override
     public void addFirst(T item) {
@@ -184,7 +186,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         private T item;
         private Node<T> prev;
         private Node<T> next;
-        public Node(T item, Node<T> prev, Node<T> next) {
+        private Node(T item, Node<T> prev, Node<T> next) {
             this.item = item;
             this.prev = prev;
             this.next = next;

@@ -14,7 +14,9 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     //the number of elements it contains.
     private int size;
 
-    public ArrayDeque() {}
+    public ArrayDeque() {
+
+    }
 
     //ensure the array has enough space to store the new element
     private boolean ensureCapacity() {
@@ -83,8 +85,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             resize(array.length / 4);
         }
         T item = (T) (array[0]);
-        for (int i = 0; i < size() - 1; ++i) {
-            array[i] = array[i + 1];
+        if (size() - 1 >= 0) {
+            System.arraycopy(array, 1, array, 0, size() - 1);
         }
         size--;
         return item;
@@ -127,20 +129,20 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (obj == this) {
             return true;
         }
         if (obj instanceof Deque) {
-           Deque<T> deque = (Deque<T>) (obj);
-           if (this.size() != deque.size()) {
-               return false;
-           }
-           for (int i = 0; i < size(); ++i) {
-               if (!this.get(i).equals(deque.get(i))) {
-                   return false;
-               }
-           }
-           return true;
+            Deque<T> deque = (Deque<T>) (obj);
+            if (this.size() != deque.size()) {
+                return false;
+            }
+            for (int i = 0; i < size(); ++i) {
+                if (!this.get(i).equals(deque.get(i))) {
+                    return false;
+                }
+            }
+            return true;
         }
         return false;
     }
