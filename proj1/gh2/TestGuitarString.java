@@ -2,16 +2,19 @@ package gh2;
 
 /* Imports the required audio library from the
  * edu.princeton.cs.introcs package. */
-import edu.princeton.cs.introcs.StdAudio;
+//import edu.princeton.cs.introcs.StdAudio;
 
+import edu.princeton.cs.algs4.StdAudio;
 import org.junit.Test;
+
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 
 /** Tests the GuitarString class.
  *  @author Josh Hug
  */
 public class TestGuitarString  {
-
     @Test
     public void testPluckTheAString() {
         GuitarString aString = new GuitarString(GuitarHeroLite.CONCERT_A);
@@ -79,5 +82,13 @@ public class TestGuitarString  {
         // for assertEquals(double, double)
         assertEquals("Wrong tic value. Try running the testTic method.", expected, s5, 0.001);
     }
-}
 
+    @Test
+    public void test(){
+        String[] arr = new String[]{"1", "23", "34", "10", "9"};
+        Arrays.sort(arr, (s1, s2) -> (s2 + s1).compareTo(s1 + s2));
+        for (String s : arr) {
+            System.out.print(s + " ");
+        }
+    }
+}
