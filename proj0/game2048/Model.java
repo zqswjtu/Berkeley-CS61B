@@ -112,14 +112,117 @@ public class Model extends Observable {
         changed = false;
 
         // TODO: Modify this.board (and perhaps this.score) to account
+        // Finished
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
+        Board b = this.board;
+        int size = b.size();
+        b.startViewingFrom(side);
+        int tmpRow = -1, tmpCol = -1;
+        for (int col = size - 1; col >= 0; col -= 1) {
+            for (int row = size - 1; row >= 0; row -= 1) {
+                for (int i = row - 1; i >= 0; i -= 1) {
+                    Tile nextTile = b.tile(col, i);
+                    if (b.tile(col, row) != null && nextTile != null) {
+                        if (b.tile(col, row).value() == nextTile.value()) { // Only if there are NULLs or nothing between these tiles
+                            Tile currentTile = b.tile(col, row);
+                            Tile nextCurrentTile = nextTile;
+                            if (checkNullsOrNothing(b, side, b.tile(col, row), nextTile)) {
+                                if (col != tmpCol || row != tmpRow) {
+                                    this.score += b.tile(col, row).value() * 2;
+                                    changed = true;
+                                    if (b.move(col, row, nextTile)) { // Judge if this move is a MERGE
+                                        tmpRow = row;
+                                        row -= 1;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // If there are NULLs in front of the current tile,
+        // then move the current one to the NULL tile in the near front
+        for (int col = size - 1; col >= 0; col -= 1) {
+            for (int row = size - 1; row >= 0; row -= 1) {
+                if (b.tile(col, row) != null) {
+                    // Find the last tile in the row which is NULL,
+                    // and put the current tile to that col COL, row ROW
+                    int pointer = row + 1;
+                    int marker = row;
+                    while (pointer < size) {
+                        if (b.tile(col, pointer) == null) {
+                            marker = pointer;
+                        }
+                        pointer += 1;
+                    }
+                    b.move(col, marker, b.tile(col, row));
+                    if (marker != row) {
+                        changed = true;
+                    }
+                }
+            }
+        }
 
         checkGameOver();
         if (changed) {
             setChanged();
         }
+
+        if (side != Side.NORTH) {
+            b.setViewingPerspective(Side.NORTH);
+        }
+
         return changed;
+    }
+
+    /** Check if there are NULLs or nothing between these tiles*/
+    private boolean checkNullsOrNothing(Board b, Side side, Tile tile, Tile nextTile) {
+        b.startViewingFrom(Side.NORTH);
+        int tileCol = tile.col();
+        int nextTileCol = nextTile.col();
+        int tileRow = tile.row();
+        int nextTileRow = nextTile.row();
+        if (tileRow - nextTileRow > 1) {
+            for (int i = tileRow - 1; i > nextTileRow; i -= 1) {
+                Tile tmp = b.tile(tileCol, i);
+                if (b.tile(tileCol, i) != null) {
+                    b.setViewingPerspective(side);
+                    return false;
+                }
+            }
+        } else if (nextTileRow - tileRow > 1) {
+            for (int i = nextTileRow - 1; i > tileRow; i -= 1) {
+                Tile tmp = b.tile(tileCol, i);
+                if (b.tile(tileCol, i) != null) {
+                    b.setViewingPerspective(side);
+                    return false;
+                }
+            }
+        }
+        if (tileCol - nextTileCol > 1) {
+            for (int i = tileCol - 1; i > nextTileCol; i -= 1) {
+//                Tile tmp = b.tile(0, 2);
+                if (b.tile(i, tileRow) != null) {
+//                if (tmp != null) {
+                    b.setViewingPerspective(side);
+                    return false;
+                }
+            }
+        } else if (nextTileCol - tileCol > 1) {
+            for (int i = nextTileCol - 1; i > tileCol; i -= 1) {
+                Tile tmp = b.tile(i, tileRow);
+                if (b.tile(i, tileRow) != null) {
+                    b.setViewingPerspective(side);
+                    return false;
+                }
+            }
+        }
+        b.setViewingPerspective(side);
+        return true;
     }
 
     /** Checks if the game is over and sets the gameOver variable
@@ -155,11 +258,8 @@ public class Model extends Observable {
     public static boolean maxTileExists(Board b) {
         // TODO: Fill in this function.
         for (Tile tile : b) {
-            if(tile != null){
-                int tileValue = tile.value();
-                if (tileValue == MAX_PIECE) {
-                    return true;
-                }
+            if(tile != null && tile.value() == MAX_PIECE){
+                return true;
             }
         }
         return false;
@@ -174,11 +274,11 @@ public class Model extends Observable {
     public static boolean atLeastOneMoveExists(Board b) {
         // TODO: Fill in this function.
         int size = b.size();
+        final int[][] directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
         for (Tile tile : b) {
             if (tile == null) {
                 return true;
             }
-            final int[][] directions = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
             for (int[] d : directions) {
                 int row = tile.row() + d[0];
                 int col = tile.col() + d[1];
