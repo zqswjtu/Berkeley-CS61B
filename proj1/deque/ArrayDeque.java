@@ -1,6 +1,5 @@
 package deque;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
@@ -9,10 +8,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     private Object[] array;
     //the initial size is 8.
     private static final int DEFAULT_CAPACITY = 8;
-    //the max array size is set to 2 ^ 20
-    private static final int MAX_CAPACITY = 2 << 20;
     //the number of elements it contains.
     private int size;
+    private int firstItemIndex;
+    private int lastItemIndex;
 
     public ArrayDeque() {
 
@@ -20,18 +19,33 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     //ensure the array has enough space to store the new element
     private boolean ensureCapacity() {
-        return array == null || size() == array.length;
+        return array == null || size() >= array.length - 3;
     }
 
     //resize the array size to store more elements
     private void resize(int newCapacity) {
         if (array == null) {
             array = new Object[DEFAULT_CAPACITY];
+            firstItemIndex = DEFAULT_CAPACITY - 1;
         } else {
             if (newCapacity < 0) {
                 throw new OutOfMemoryError();
             }
-            array = Arrays.copyOf(array, newCapacity);
+            //rebuild the copy code with firstItemIndex and lastItemIndex
+            //change firstItemIndex and lastItemIndex
+            //array = Arrays.copyOf(array, newCapacity);
+            int index = 0;
+            Object[] newArray = new Object[newCapacity];
+            int start = (firstItemIndex + 1) % array.length;
+            int end = lastItemIndex;
+            while (start != end) {
+                newArray[index++] = array[start];
+                start = (start + 1) % array.length;
+            }
+            array = newArray;
+            //update firstItemIndex and lastItemIndex
+            firstItemIndex = array.length - 1;
+            lastItemIndex = index;
         }
     }
 
@@ -41,10 +55,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             int newCapacity = 2 * size();
             resize(newCapacity);
         }
-        if (size() >= 0) {
-            System.arraycopy(array, 0, array, 1, size());
-        }
-        array[0] = item;
+        array[firstItemIndex] = item;
+        firstItemIndex = (firstItemIndex - 1 + array.length) % array.length;
         size++;
     }
 
@@ -54,14 +66,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
             int newCapacity = 2 * size();
             resize(newCapacity);
         }
-        array[size()] = item;
+        array[lastItemIndex] = item;
+        lastItemIndex = (lastItemIndex + 1) % array.length;
         size++;
     }
-
-    /*@Override
-    public boolean isEmpty() {
-        return array == null || size() == 0;
-    }*/
 
     @Override
     public int size() {
@@ -70,8 +78,12 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public void printDeque() {
-        for (int i = 0; i < size(); ++i) {
-            System.out.print((T) (array[i]) + " ");
+        //rebuild the code with firstItemIndex and lastItemIndex
+        int start = (firstItemIndex + 1) % array.length;
+        int end = lastItemIndex;
+        while (start != end) {
+            System.out.print((T) (array[start]) + " ");
+            start = (start + 1) % array.length;
         }
         System.out.println();
     }
@@ -84,10 +96,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if ((size < array.length / 4) && (size > 4)) {
             resize(array.length / 4);
         }
-        T item = (T) (array[0]);
-        if (size() - 1 >= 0) {
-            System.arraycopy(array, 1, array, 0, size() - 1);
-        }
+        firstItemIndex = (firstItemIndex + 1) % array.length;
+        T item = (T) (array[firstItemIndex]);
         size--;
         return item;
     }
@@ -100,8 +110,8 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if ((size < array.length / 4) && (size > 4)) {
             resize(array.length / 4);
         }
-        T item = (T) (array[size() - 1]);
-        array[size() - 1] = null;
+        lastItemIndex = (lastItemIndex - 1 + array.length) % array.length;
+        T item = (T) (array[lastItemIndex]);
         size--;
         return item;
     }
@@ -112,16 +122,10 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
         if (index < 0 || isEmpty() || index >= size()) {
             return null;
         }
-        return (T) (array[index]);
+        //rebuild the code with firstItemIndex and lastItemIndex
+        return (T) (array[(firstItemIndex + 1 + index) % array.length]);
+        //return (T) (array[index]);
     }
-
-    /*public void set(int index, T item) {
-        //If no such element exists, return null
-        if (index < 0 || isEmpty() || index >= size()) {
-            return;
-        }
-        array[index] = item;
-    }*/
 
     public Iterator<T> iterator() {
         return new AllItemIterator();
@@ -148,7 +152,7 @@ public class ArrayDeque<T> implements Deque<T>, Iterable<T> {
     }
 
     private class AllItemIterator implements Iterator<T> {
-        private int index = 0;
+        int index = 0;
 
         @Override
         public boolean hasNext() {
