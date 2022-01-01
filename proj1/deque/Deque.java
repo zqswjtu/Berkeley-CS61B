@@ -1,6 +1,5 @@
 package deque;
 
-import java.util.Iterator;
 
 public interface Deque<T> {
     /**
@@ -53,25 +52,25 @@ public interface Deque<T> {
      */
     T get(int index);
 
-    /**
-     * Updates the item at given index with the given item, if no such item exists, return.
-     * @param index
-     * @param item
-     */
-    void set(int index, T item);
-
-    /**
-     * The Deque objects we’ll make are iterable (i.e. Iterable<T>) so we must provide this method to
-     * return an iterator.
-     * @return
-     */
-    Iterator<T> iterator();
-
-    /**
-     * Returns whether or not the parameter o is equal to the Deque. o is considered equal if it is a Deque
-     * and if it contains the same contents (as goverened by the generic T’s equals method) in the same order.
-     * @param o
-     * @return
-     */
-    boolean equals(Object o);
+//    /**
+//     * Updates the item at given index with the given item, if no such item exists, return.
+//     * @param index
+//     * @param item
+//     */
+//    void set(int index, T item);
+//
+//    /**
+//     * The Deque objects we’ll make are iterable (i.e. Iterable<T>) so we must provide this method to
+//     * return an iterator.
+//     * @return
+//     */
+//    Iterator<T> iterator();
+//
+//    /**
+//     * Returns whether or not the parameter o is equal to the Deque. o is considered equal if it is a Deque
+//     * and if it contains the same contents (as goverened by the generic T’s equals method) in the same order.
+//     * @param o
+//     * @return
+//     */
+//    boolean equals(Object o);
 }

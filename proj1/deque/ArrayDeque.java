@@ -115,7 +115,6 @@ public class ArrayDeque<T> implements Deque<T> {
         array[index] = item;
     }
 
-    @Override
     public Iterator<T> iterator() {
         return new AllItemIterator();
     }

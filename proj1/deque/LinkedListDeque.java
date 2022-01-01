@@ -131,7 +131,6 @@ public class LinkedListDeque<T> implements Deque<T>{
         return node == null ? null : node.item;
     }
 
-    @Override
     public void set(int index, T item) {
         Node<T> node = getNode(index);
         if (node != null) {
@@ -160,7 +159,6 @@ public class LinkedListDeque<T> implements Deque<T>{
         return getItemRecursive(index, f);
     }
 
-    @Override
     public Iterator<T> iterator() {
         return new AllItemIterator();
     }
