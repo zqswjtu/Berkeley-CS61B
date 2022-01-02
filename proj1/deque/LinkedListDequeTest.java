@@ -130,16 +130,14 @@ public class LinkedListDequeTest {
     @Test
     public void test(){
         Random random = new Random();
-        LinkedListDeque<Integer> linkedListDeque = new LinkedListDeque<>();
+        ArrayDeque<Integer> arrayDeque = new ArrayDeque<>();
         for (int i = 0; i < random.nextInt(10) + 10; i++) {
-            linkedListDeque.addLast(random.nextInt(20));
+            arrayDeque.addLast(random.nextInt(20));
         }
-        linkedListDeque.printDeque();
-        Iterator<Integer> iterator = linkedListDeque.iterator();
-        while (iterator.hasNext()) {
-            System.out.print(iterator.next() + " ");
+        arrayDeque.printDeque();
+        for (Integer integer : arrayDeque) {
+            System.out.print(integer + " ");
         }
         System.out.println();
-        System.out.println(linkedListDeque.get(12).equals(linkedListDeque.getRecursive(12)));
     }
 }

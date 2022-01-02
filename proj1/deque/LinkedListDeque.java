@@ -101,11 +101,12 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
         return item;
     }
 
+    //If no such element exists, return null
+    private boolean noSuchItem(int index) {
+        return index < 0 || isEmpty() || index >= size();
+    }
+
     private Node<T> getNode(int index) {
-        //If no such element exists, return null
-        if (index < 0 || isEmpty() || index >= size()) {
-            return null;
-        }
         int count = 0;
         Node<T> tmp = null;
         if (index < size() / 2) {
@@ -126,8 +127,10 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
 
     @Override
     public T get(int index) {
-        Node<T> node = getNode(index);
-        return node == null ? null : node.item;
+        if (noSuchItem(index)) {
+            return null;
+        }
+        return getNode(index).item;
     }
 
     /*public void set(int index, T item) {
@@ -151,7 +154,7 @@ public class LinkedListDeque<T> implements Deque<T>, Iterable<T> {
      */
     public T getRecursive(int index) {
         //If no such element exists, return null
-        if (index < 0 || isEmpty() || index >= size()) {
+        if (noSuchItem(index)) {
             return null;
         }
         Node<T> f = first;
