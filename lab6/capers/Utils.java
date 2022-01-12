@@ -67,8 +67,10 @@ class Utils {
                 }
             }
             str.close();
-        } catch (IOException | ClassCastException excp) {
-            throw new IllegalArgumentException(excp.getMessage());
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
@@ -82,9 +84,12 @@ class Utils {
             T result = expectedClass.cast(in.readObject());
             in.close();
             return result;
-        } catch (IOException | ClassCastException
-                | ClassNotFoundException excp) {
-            throw new IllegalArgumentException(excp.getMessage());
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (ClassCastException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+            throw new IllegalArgumentException(e.getMessage());
         }
     }
 
