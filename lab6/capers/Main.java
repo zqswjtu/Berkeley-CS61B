@@ -43,22 +43,17 @@ public class Main {
 
         CapersRepository.setupPersistence();
         String text;
-        switch (args[0]) {
-        case "story":
-            /* This call has been handled for you. The rest will be similar. */
+        if ("story".equals(args[0])) {/* This call has been handled for you. The rest will be similar. */
             validateNumArgs("story", args, 2);
             text = args[1];
             CapersRepository.writeStory(text);
-            break;
-        case "dog":
+        } else if ("dog".equals(args[0])) {
             validateNumArgs("dog", args, 4);
             // TODO: make a dog
-            break;
-        case "birthday":
+        } else if ("birthday".equals(args[0])) {
             validateNumArgs("birthday", args, 2);
             // TODO: celebrate this dog's birthday
-            break;
-        default:
+        } else {
             exitWithError(String.format("Unknown command: %s", args[0]));
         }
         return;
