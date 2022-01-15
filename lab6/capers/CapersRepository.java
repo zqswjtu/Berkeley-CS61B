@@ -1,10 +1,11 @@
 package capers;
 
-import java.io.File;
+import java.io.*;
+
 import static capers.Utils.*;
 
 /** A repository for Capers 
- * @author TODO
+ * @author zq
  * The structure of a Capers Repository is as follows:
  *
  * .capers/ -- top level folder for all persistent data in your lab12 folder
@@ -18,9 +19,9 @@ public class CapersRepository {
     static final File CWD = new File(System.getProperty("user.dir"));
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // TODO Hint: look at the `join`
+    static final File CAPERS_FOLDER = Utils.join(CWD, "\\capers"); // TODO Hint: look at the `join`
                                             //      function in Utils
-
+    private static String storyString;
     /**
      * Does required filesystem operations to allow for persistence.
      * (creates any necessary folders or files)
@@ -32,6 +33,8 @@ public class CapersRepository {
      */
     public static void setupPersistence() {
         // TODO
+        File path = Utils.join(CAPERS_FOLDER, "\\story.txt");
+        Utils.writeObject(path, storyString);
     }
 
     /**
@@ -41,6 +44,43 @@ public class CapersRepository {
      */
     public static void writeStory(String text) {
         // TODO
+        storyString = text;
+        File path = Utils.join(CAPERS_FOLDER, "\\story.txt");
+        //read story from file
+        StringBuilder oldStory = null;
+        FileInputStream fileInputStream = null;
+        ObjectInputStream objectInputStream = null;
+        try {
+            fileInputStream = new FileInputStream(path);
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            oldStory = (StringBuilder) objectInputStream.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (objectInputStream != null) {
+                try {
+                    objectInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fileInputStream != null) {
+                try {
+                    fileInputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        oldStory = oldStory != null ? oldStory.append(text) : new StringBuilder(text);
+        System.out.println(oldStory);
+        setupPersistence();
+        //append the read story from file to text
+        //print the final string
     }
 
     /**
