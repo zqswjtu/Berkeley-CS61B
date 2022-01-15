@@ -2,7 +2,7 @@ package bstmap;
 
 import java.util.*;
 
-public class BSTMap<K, V> implements Map61B<K, V> {
+public class BSTMap<K extends Comparable<K>,V> implements Map61B<K, V> {
     private static final class TreeNode<K, V> {
         K key;
         V value;
@@ -17,18 +17,8 @@ public class BSTMap<K, V> implements Map61B<K, V> {
         }
     }
 
-    private final Comparator<? super K> comparator;
-
     private int size;
     private TreeNode<K, V> root;
-
-    public BSTMap() {
-        this.comparator = null;
-    }
-
-    public BSTMap(Comparator<? super K> comparator) {
-        this.comparator = comparator;
-    }
 
     @Override
     public void clear() {
@@ -36,10 +26,10 @@ public class BSTMap<K, V> implements Map61B<K, V> {
         root = null;
     }
 
-    private int compare(Object k1, Object k2) {
+    /*private int compare(Object k1, Object k2) {
         return comparator == null ? ((Comparable<? super K>)k1).compareTo((K)k2)
                 : comparator.compare((K)k1, (K)k2);
-    }
+    }*/
 
     private TreeNode<K, V> getNode(K key) {
         if (root != null) {
@@ -47,7 +37,7 @@ public class BSTMap<K, V> implements Map61B<K, V> {
             while (tmp != null) {
                 if (Objects.equals(key, tmp.key)) {
                     return tmp;
-                } else if (compare(key, tmp.key) < 0) {
+                } else if (key.compareTo(tmp.key) < 0) {
                     tmp = tmp.left;
                 } else {
                     tmp = tmp.right;
@@ -82,16 +72,16 @@ public class BSTMap<K, V> implements Map61B<K, V> {
             TreeNode<K, V> parent = null;
             while (tmp != null) {
                 parent = tmp;
-                if (compare(key, tmp.key) < 0) {
+                if (key.compareTo(tmp.key) < 0) {
                     tmp = tmp.left;
-                } else if (compare(key, tmp.key) > 0){
+                } else if (key.compareTo(tmp.key) > 0){
                     tmp = tmp.right;
                 } else {
                     tmp.value = value;
                     return;
                 }
             }
-            if (compare(key, parent.key) < 0) {
+            if (key.compareTo(parent.key) < 0) {
                 parent.left = new TreeNode<>(key, value, null, null);
             } else {
                 parent.right = new TreeNode<>(key, value, null, null);
@@ -128,9 +118,9 @@ public class BSTMap<K, V> implements Map61B<K, V> {
     private TreeNode<K, V> removeTreeNode(TreeNode<K, V> treeNode, TreeNode<K, V> tmp, K key) {
         if (treeNode == null) {
             return null;
-        } else if (compare(key, treeNode.key) < 0) {
+        } else if (key.compareTo(treeNode.key) < 0) {
             treeNode.left = removeTreeNode(treeNode.left, tmp, key);
-        } else if (compare(key, treeNode.key) > 0) {
+        } else if (key.compareTo(treeNode.key) > 0) {
             treeNode.right = removeTreeNode(treeNode.right, tmp, key);
         } else {
             tmp.value = treeNode.value;
@@ -172,6 +162,14 @@ public class BSTMap<K, V> implements Map61B<K, V> {
             return remove(key);
         }
         return null;
+    }
+
+    public void printInOrder() {
+        Iterator<K> iterator = iterator();
+        while (iterator.hasNext()) {
+            System.out.print(iterator.next() + " ");
+        }
+        System.out.println();
     }
 
     @Override
