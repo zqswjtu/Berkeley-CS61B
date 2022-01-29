@@ -30,11 +30,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         }
     }
 
-    static final double DEFAULT_LOAD_FACTOR = 0.75;
-    static final int DEFAULT_INITIAL_CAPACITY = 16;
-    static final int MAXIMUM_CAPACITY = 1 << 30;
+    private static final double DEFAULT_LOAD_FACTOR = 0.75;
+    private static final int DEFAULT_INITIAL_CAPACITY = 16;
+    private static final int MAXIMUM_CAPACITY = 1 << 30;
 
-    static final int tableSizeFor(int cap) {
+    private static final int tableSizeFor(int cap) {
         int n = cap - 1;
         n |= n >>> 1;
         n |= n >>> 2;
@@ -44,7 +44,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
     }
 
-    static final int hash(Object key) {
+    private static final int hash(Object key) {
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
