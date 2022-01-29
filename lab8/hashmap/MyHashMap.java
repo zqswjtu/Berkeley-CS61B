@@ -75,13 +75,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
      */
     public MyHashMap(int initialSize, double maxLoad) {
         if (initialSize < 0)
-            throw new IllegalArgumentException("Illegal initial capacity: " +
-                    initialSize);
+            throw new IllegalArgumentException("Illegal initial capacity: " + initialSize);
         if (initialSize > MAXIMUM_CAPACITY)
             initialSize = MAXIMUM_CAPACITY;
         if (maxLoad <= 0 || Double.isNaN(maxLoad))
-            throw new IllegalArgumentException("Illegal load factor: " +
-                    maxLoad);
+            throw new IllegalArgumentException("Illegal load factor: " + maxLoad);
         this.loadFactor = maxLoad;
         this.threshold = tableSizeFor(initialSize);
     }
@@ -315,10 +313,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         // the bucket at table index
         private Iterator<Node> iterator;
 
-        public MyHashMapIterator() {
+        MyHashMapIterator() {
             if (buckets != null && size() > 0) {
                 len = buckets.length;
-                for (int i = 0 ; i < len; ++i) {
+                for (int i = 0; i < len; ++i) {
                     if (buckets[i] != null) {
                         index = i;
                         iterator = buckets[i].iterator();
